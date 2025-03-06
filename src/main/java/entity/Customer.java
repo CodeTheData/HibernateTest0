@@ -1,6 +1,5 @@
 package entity;
 
-import converter.BirtdayConverter;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,17 +14,24 @@ import lombok.NoArgsConstructor;
 @Table(name = "customers")
 public class Customer {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "firstname")
-    private String firstName;
+    /*
+    второй вариант
+    @Id
+    @GeneratedValue(generator = "user_gen", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "user_gen", sequncename = "user_id_seq", allocationSize = 1) по умалочанию (50)
+    private Integer id;
+     */
 
-    @Column(name = "lastname")
-    private String lastName;
+    @Column(name = "username")
+    private String username;
 
-    @Convert(converter = BirtdayConverter.class)
-    @Column(name = "birth_date")
-    private Birthday birthDate;
+//    @AttributeOverride(name = "birthDate", column = @Column(name = "birth_date")) //ещё вариант как замена @Column
+
+    @Embedded
+    private PersonalInfo personalInfo;
 
     @Enumerated(EnumType.STRING)
     private Role role;
