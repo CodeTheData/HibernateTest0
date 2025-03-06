@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.Date;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -16,18 +14,26 @@ import java.util.Date;
 @Table(name = "customers")
 public class Customer {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @Column(name = "first_name")
-    private String firstName;
-    @Column(name = "last_name")
-    private String lastName;
-    private String address;
-    private String phone;
-    //    @Column(name = "date")
-//    private Date date;
-    @Column(name = "age")
-    private Integer age;
-    @Enumerated
+
+    /*
+    второй вариант
+    @Id
+    @GeneratedValue(generator = "user_gen", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "user_gen", sequncename = "user_id_seq", allocationSize = 1) по умалочанию (50)
+    private Integer id;
+     */
+
+    @Column(name = "username")
+    private String username;
+
+//    @AttributeOverride(name = "birthDate", column = @Column(name = "birth_date")) //ещё вариант как замена @Column
+
+    @Embedded
+    private PersonalInfo personalInfo;
+
+    @Enumerated(EnumType.STRING)
     private Role role;
 
 }
